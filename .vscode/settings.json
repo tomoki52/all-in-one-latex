@@ -1,62 +1,68 @@
 {
-    "latex-workshop.latex.tools": [
-        {
-            "name": "latexmk",
-            "command": "latexmk",
-            "args": [
-                "%DOCFILE_EXT%"
-            ]
-        },
-    ],
-    "latex-workshop.latex.recipes": [
-        {
-            "name": "compile",
-            "tools": [
-                "latexmk",
-            ]
-        },
-    ],
-    "latex-workshop.latex.autoBuild.run": "onFileChange",
-    "latex-workshop.view.pdf.viewer": "tab",
-    "latex-workshop.latex.autoClean.run": "onBuilt",
-    "latex-workshop.latex.clean.fileTypes": [
-        "*.aux",
-        "*.bbl",
-        "*.blg",
-        "*.idx",
-        "*.ind",
-        "*.lof",
-        "*.lot",
-        "*.out",
-        "*.toc",
-        "*.acn",
-        "*.acr",
-        "*.alg",
-        "*.glg",
-        "*.glo",
-        "*.gls",
-        "*.ist",
-        "*.fls",
-        "*.fdb_latexmk",
-        "*.synctex.gz",
-        "_minted*",
-        "*.nav",
-        "*.snm",
-        "*.vrb",
-        "*.run.xml",
-        "*.dvi",
-        "*.fdb_latexmk",
-        "*.fls",
-        "*.toc",
-        "*.bcf",
-    ],
-    "latex-workshop.latexindent.args": [
-        "%TMPFILE%",
-        "-c=%DIR%/",
-        "-g=%DOCFILE%-indent.log",
-        "-r",
-        "-l",
-    ],
-    "editor.wordSeparators": "./\\()\"'-:,.;<>~!@#$%^&*|+=[]{}`~?．。，、（）「」［］｛｝《》てにをはがのともへでや",
+  "[latex]": {
     "editor.formatOnSave": true,
+    "editor.defaultFormatter": "James-Yu.latex-workshop"
+  },
+  "latex-workshop.latexindent.path": "latexindent",
+  "latex-workshop.linting.chktex.enabled": false,
+  "latex-workshop.linting.lacheck.enabled": true,
+  "latex-workshop.linting.run": "onType",
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": ["-file-line-error", "-interaction=nonstopmode", "%DOCFILE_EXT%"]
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "compile",
+      "tools": ["latexmk"]
+    }
+  ],
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.latex.autoClean.run": "onBuilt",
+  "latex-workshop.latex.clean.fileTypes": [
+    "*.bbl",
+    "*.dvi",
+    "*.aux",
+    "*.bbl",
+    "*.blg",
+    "*.idx",
+    "*.ind",
+    "*.lof",
+    "*.lot",
+    "*.out",
+    "*.toc",
+    "*.acn",
+    "*.acr",
+    "*.alg",
+    "*.glg",
+    "*.glo",
+    "*.gls",
+    "*.ist",
+    "*.fls",
+    "*.fdb_latexmk",
+    "*.synctex.gz",
+    "_minted*",
+    "*.nav",
+    "*.snm",
+    "*.vrb",
+    "*.run.xml",
+    "*.dvi",
+    "*.fdb_latexmk",
+    "*.fls",
+    "*.toc",
+    "*.bcf"
+  ],
+  "latex-workshop.latexindent.args": [
+    "%TMPFILE%",
+    "-c=%DIR%/",
+    "-g=%DOCFILE%-indent.log",
+    "-r",
+    "-l"
+  ],
+  "editor.wordSeparators": "./\\()\"'-:,.;<>~!@#$%^&*|+=[]{}`~?．。，、（）「」［］｛｝《》てにをはがのともへでや",
+  "editor.formatOnSave": true
 }

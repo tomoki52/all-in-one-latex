@@ -1,0 +1,15 @@
+{
+    "Figure": {
+      "prefix": "figure",
+      "body": [
+        "\\begin{figure}[t]",
+        "\\centering",
+        "\\includegraphics[width=0.8\\linewidth]{$1}",
+        "\\caption{$2}",
+        "\\label{fig:$3}",
+        "\\end{figure}"
+      ],
+      "description": "set figure"
+    }
+  }
+  

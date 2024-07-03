@@ -24,15 +24,60 @@ jobs:
         name: compiled-document
         path: ./main.pdf
 
-    - name: Comment on PR
-      uses: actions/github-script@v3
+
+
+    - name: List files
+      run: ls -R
+        
+    - name: Get PR title
+      id: get_pr_title
+      run: |
+          echo "::set-output name=title::$(jq -r .pull_request.title $GITHUB_EVENT_PATH)"
+
+    - name: Genrate PDF file name
+      id: gen_pdf_name
+      run: |
+          TITLE=$(echo ${{ steps.get_pr_title.outputs.title }} | sed 's/ /_/g')
+          PDF_NAME="HCI209_${TITLE}.pdf"
+          mv ./main.pdf ./$PDF_NAME
+          echo "PDF_NAME=${PDF_NAME}" >> $GITHUB_ENV
+          
+    - name: List files after renaming
+      run: ls -R
+        
+    - name: rclone
+      uses: wei/rclone@v1
+      env:
+        RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
-        script: |
-          const artifactURL = `https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
-          github.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: `Compilation complete. You can download the compiled PDF [here](${artifactURL}).`
-          });
+        args: copy ./${{ env.PDF_NAME }} googledrive:/HCI209/
+        id: upload_to_drive
+
+    #- name: Get Google Drive File ID
+    #  uses: wei/rclone@v1
+    #  env:
+    #    RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
+    #  with:
+    #    args: lsjson googledrive:/HCI209/${{ env.PDF_NAME }}
+    #    id: get_drive_file_id
+#
+    #- name: Extract File ID
+    #  id: extract_file_id
+    #  run: echo "::set-output name=id::$(echo '${{ steps.get_drive_file_id.outputs.stdout }}' | jq -r '.[0].ID')"
+#
+    #- name: Generate Google Drive File Link
+    #  id: gen_drive_file_link
+    #  run: echo "https://drive.google.com/file/d/${{ steps.extract_file_id.outputs.id }}/view"
+    #
+    #- name: Comment on PR with Google Drive File Link
+    #  uses: actions/github-script@v3
+    #  with:
+    #    github-token: ${{ secrets.GITHUB_TOKEN }}
+    #    script: |
+    #      const link = "${{ steps.gen_drive_file_link.outputs.id }}";
+    #      github.issues.createComment({
+    #        issue_number: context.issue.number,
+    #        owner: context.repo.owner,
+    #        repo: context.repo.repo,
+    #        body: `Google Drive File Link: ${link}`
+    #      });

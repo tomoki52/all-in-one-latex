@@ -1,12 +1,10 @@
-name: Release
+name: make_pdf_in_tag
 
 on:
   push:
     tags:
-    - 'v*'
-env:
-  # Change this to the name of your LaTeX document
-  FILENAME: main
+      - 'v*'  # タグのパターンを指定（ここでは "v" で始まるタグ）
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,18 +19,34 @@ jobs:
     - name: Compile LaTeX document
       run: docker run --rm -v $PWD:/workdir latex_docker latexmk
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload PDF
+      uses: actions/upload-artifact@v2
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
+        name: compiled-document
+        path: ./main.pdf
 
-    - name: Upload compiled document to Release
-      uses: softprops/action-gh-release@v1
+    - name: List files
+      run: ls -R
+
+    - name: Get Tag Name
+      id: get_tag_name
+      run: echo "::set-output name=tag::$(echo $GITHUB_REF | sed 's/refs\/tags\///')"
+
+    - name: Generate PDF file name
+      id: gen_pdf_name
+      run: |
+          TAG=$(echo ${{ steps.get_tag_name.outputs.tag }})
+          PDF_NAME="HCI209_${TAG}.pdf"
+          mv ./main.pdf ./$PDF_NAME
+          echo "PDF_NAME=${PDF_NAME}" >> $GITHUB_ENV
+
+    - name: List files after renaming
+      run: ls -R
+
+    - name: rclone
+      uses: wei/rclone@v1
+      env:
+        RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
       with:
-          files: ${{ env.FILENAME }}.pdf
+        args: copy ./${{ env.PDF_NAME }} googledrive:/HCI209/
+        id: upload_to_drive

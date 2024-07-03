@@ -18,12 +18,12 @@ $\LaTeX$ on Docker at local VSCode with textlint, latexindent, and GitHub
   - GitHub のエコシステム（PR, CI, Projects, Issues, Actions, ...）が使用可能
   - 以下の Actions を作成済み
     - Tag に応じて PDF をビルドして Release を作成する
-    - Pull request にビルドした PDF のリンクを貼る
+    - PDFを[rclone](https://rclone.org/)を使ってGoogle Driveにアップロードする
 - [textlint](https://github.com/textlint/textlint)
   - 文章校正が可能
 - [latexindent](https://github.com/cmhughes/latexindent.pl)
   - TeX ファイルの自動フォーマットが可能
-
+- [rclone](https://rclone.org/)
 ## Usage
 
 ### 1. VSCodeのインストール

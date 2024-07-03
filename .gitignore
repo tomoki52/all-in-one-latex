@@ -5,6 +5,7 @@ node_modules
 *.fls
 *.log
 *.bak
+*.bbl
 
 # ignore only root pdf to track img/*.pdf
 /*.pdf
